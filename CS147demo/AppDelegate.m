@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 
@@ -16,8 +17,34 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // REPLACE WITH YOUR APP ID AND CLIENT KEY
+    [Parse setApplicationId:@"KNKWuUGGVEKisbNDrkcvTY2fQkEFg1O8KA6DUrfZ" clientKey:@"gsD8fNC4XM3dBTXqQwUuyxdL5lQHY4X0eqz7SVXt"];
+    [PFFacebookUtils initializeFacebook];
+    
+    // Set default ACLs
+    PFACL *defaultACL = [PFACL ACL];
+    [defaultACL setPublicReadAccess:YES];
+    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    
     return YES;
+  
+}
+
+// Facebook oauth callback
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Handle an interruption during the authorization flow, such as the user clicking the home button.
+    [FBSession.activeSession handleDidBecomeActive];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -34,9 +61,7 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
+
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

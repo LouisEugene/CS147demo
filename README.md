@@ -5,6 +5,7 @@ This is a simple tracking app.
 We use Parse for backend.
 
 If you want to reuse the code for your project:
+
 PARSE:
 - Create an account on Parse (https://www.parse.com)
 - Create a new app (https://www.parse.com/apps)
